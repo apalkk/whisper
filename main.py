@@ -25,11 +25,12 @@ def submit(
             #webbrowser.open('file://' + os.path.realpath('invalid.html')) #Not working ??
             #return("Key Has Aldready Been Taken")
             
-    with open('sample.json', mode='r+', encoding='utf-8') as feedsjson:
-     feeds = json.load(feedsjson)
+    with open('sample.json', mode='r', encoding='utf-8') as rf:
      entry = {id:{"name": name,"message": is_accepted}}
-     feeds.append(entry)
-     json.dump(feeds, feedsjson)
+     jf = json.load(rf)
+     jf.append(entry)
+     with open('sample.json', mode='w') as wf:
+         json.dump(jf, wf)
     #with open('sample.json', 'w') as f:
          #dict1 ={point:{"name": name,"message": is_accepted}}
          #json.dump(dict1, f, indent=6)
