@@ -71,8 +71,8 @@ def main(id:int):
     output_json = json.loads(jsonBinRead())
     key = str(id)
     for d in output_json:
-        if key in d:
-         output_json.pop(d[key])
+         if key in d:
+             output_json.pop(d)
     url = 'https://api.jsonbin.io/v3/b/63b38cdfdfc68e59d576caed'
     headers = {
     'Content-Type': 'application/json',

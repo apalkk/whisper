@@ -1,0 +1,1 @@
+{"id":"fc2731e4-9c49-42eb-9142-be7b043c7f66","space":45816,"runtime":"python3.9","name":"whisper","path":"0v0g9g","project":"b0du03y0","account":"144798365827","region":"us-east-1","deps":["fastapi","uvicorn","requests","jinja2","python-multipart"],"envs":null,"public":true,"log_level":"off","cron":""}

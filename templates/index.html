@@ -10,18 +10,18 @@ if(typeof a == int){
 }
 function search() {
     var search_key = document.getElementById('input_id').value;
-    let link = "http://127.0.0.1:8000/search/"+search_key;
+    let link = "https://0v0g9g.deta.dev/search/"+search_key;
     window.open(link)
 }
 function delete2() {
     var search_key = document.getElementById('input_id2').value;
-    let link = "http://127.0.0.1:8000/delete/"+search_key;
+    let link = "https://0v0g9g.deta.dev/delete/"+search_key;
     window.open(link)
 }
       </script>
    </head>
    <body>
-      <form method="post" action="http://127.0.0.1:8000/submit"  enctype="multipart/form-data">
+      <form method="post" action="https://0v0g9g.deta.dev/submit"  enctype="multipart/form-data">
          Sender : <input type="text" name="name" value="Name"><br>
          Message : <input type="text" name="is_accepted" value="Message"><br>    
          Key : <input type="number" name="id" value=1><br>

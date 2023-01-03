@@ -6,6 +6,6 @@ if(typeof a == int){
 }
 function search() {
     var search_key = document.getElementById('input_id').value;
-    let link = "http://127.0.0.1:8000/search/1";
+    let link = "https://0v0g9g.deta.dev/search/1";
     window.open(link)
 }
