@@ -5,38 +5,46 @@ from fastapi.templating import Jinja2Templates
 import json
 import os
 import webbrowser
+import requests
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+def jsonBinRead():
+ url = 'https://api.jsonbin.io/v3/b/63b38cdfdfc68e59d576caed/latest?meta=false'
+ headers = {
+  'X-Master-Key': '$2b$10$2fEbQjOC/U05fN2qCBFLn.IbJKWeVNdMLCksJCPTI0o7M1MiPm9fO'
+   }
 
-f=open('sample.json')
+ req = requests.get(url, json=None, headers=headers)
+ return(req.text)
+
+def jsonBinAdd(entry):
+ url = 'https://api.jsonbin.io/v3/b/63b38cdfdfc68e59d576caed/latest?meta=false'
+ headers = {
+ 'X-Master-Key': '$2b$10$2fEbQjOC/U05fN2qCBFLn.IbJKWeVNdMLCksJCPTI0o7M1MiPm9fO'
+ }
+ req = requests.get(url, json=None, headers=headers)
+ txt = req.text
+ data=json.loads(txt)
+ url = 'https://api.jsonbin.io/v3/b/63b38cdfdfc68e59d576caed'
+ headers = {
+  'Content-Type': 'application/json',
+  'X-Master-Key': '$2b$10$2fEbQjOC/U05fN2qCBFLn.IbJKWeVNdMLCksJCPTI0o7M1MiPm9fO'
+ }
+ data.append(entry)
+ req = requests.put(url, json=data, headers=headers)
+
 
 @app.post("/submit")
 def submit(
     name: str = Form(...),
     id: int = Form(...),
     is_accepted: str = Form(...),
-    #files: List[UploadFile] = File(...) # Dead File Uploader
 ):   
-    #key = str(id)
-    #for d in f:
-        #if key in d:
-            #webbrowser.open('file://' + os.path.realpath('invalid.html')) #Not working ??
-            #return("Key Has Aldready Been Taken")
-            
-    with open('sample.json', mode='r', encoding='utf-8') as rf:
-     entry = {id:{"name": name,"message": is_accepted}}
-     jf = json.load(rf)
-     jf.append(entry)
-     with open('sample.json', mode='w') as wf:
-         json.dump(jf, wf)
-    #with open('sample.json', 'w') as f:
-         #dict1 ={point:{"name": name,"message": is_accepted}}
-         #json.dump(dict1, f, indent=6)
+    jsonBinAdd({id:{"name": name,"message": is_accepted}})
     return {
         "JSON Payload ": {"name": name, "id": id, "is_accepted": is_accepted},
-        #"Filenames": [file.filename for file in files],
     }
 
 
@@ -47,51 +55,29 @@ def main(request: Request):
 
 @app.get("/superSecret/FindAll", response_class=HTMLResponse)
 def main():
-    a_file = open("sample.json", "r")
-    a_json = json.load(a_file)
-    pretty_json = json.dumps(a_json, indent=4)
-    a_file.close()
-    return(pretty_json)
+    print(jsonBinRead())
 
 
 @app.get("/search/{id}")
 def main(id:int):
-    output_file = open('sample.json').read()
-    output_json = json.loads(output_file)
+    output_json = json.loads(jsonBinRead())
     key = str(id)
     for d in output_json:
          if key in d:
              yield (d[key]['message'] + " - "+d[key]['name'])
 
-
-def search(key:str):
-    output_file = open('sample.json').read()
-    output_json = json.loads(output_file)
-    for d in output_json:
-        if key in d:
-            yield d[key]['message'] + " - "+d[key]['name']
-        else: return("End")
-    #search(key) #Recursive search deprecated
-    
-
-@app.get("/superSecret/DeleteAll")
-def main():
-    with open("sample.json", "w") as killfile:
-     json.dump({}, killfile)
-
 @app.get("/delete/{id}")
 def main(id:int):
-    id = str(id)
-    file_name = 'example.json'
-    with open('sample.json', 'r', encoding='utf-8') as f:
-     my_list = json.load(f)
-     output_file = open('sample.json').read()
-     output_json = json.loads(output_file)
-     key = str(id)
-     for d in output_json:
-         if key in d:
-             my_list.pop(d[key])
-     new_file_name = 'sample.json'
-     with open(new_file_name, 'w', encoding='utf-8') as f:
-         f.write(json.dumps(my_list, indent=2))
+    output_json = json.loads(jsonBinRead())
+    key = str(id)
+    for d in output_json:
+        if key in d:
+         output_json.pop(d[key])
+    url = 'https://api.jsonbin.io/v3/b/63b38cdfdfc68e59d576caed'
+    headers = {
+    'Content-Type': 'application/json',
+    'X-Master-Key': '$2b$10$2fEbQjOC/U05fN2qCBFLn.IbJKWeVNdMLCksJCPTI0o7M1MiPm9fO'
+    }
+    req = requests.put(url, json=output_json, headers=headers)
+    
     
