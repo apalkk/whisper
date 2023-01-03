@@ -1,4 +1,6 @@
 # Whisper
 
-A webapp built with FAST api and python. It converts input taken from an HTML form and then adds it a json file. The json file can then be read to search for input, by the keys added during the entry of the data. 
-Download the repo and paste "uvicorn main:app --reload" in the terminal to run the program on the localhost.
+Whisper is a web app built with python with FastAPI. It stores messages by reading and writing to a JSON file hosted by [jsonbin.io](https://jsonbin.io/app). The webapp was deployed with [deta](https://www.deta.sh/). 
+
+##Local
+To run this web app on the localhost, switch to the __localhost__ branch of the repo.
